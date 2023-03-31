@@ -15,6 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fesc.apipartidos.Models.Peticiones.UsuarioSigupRequestModel;
+import com.fesc.apipartidos.Services.IUsuarioService;
+import com.fesc.apipartidos.Shared.UsuarioDto;
+import com.fesc.apipartidos.Utils.AppContexto;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -68,7 +71,12 @@ public class UsuarioAutenticacion extends UsernamePasswordAuthenticationFilter{
                 .setExpiration(new Date(System.currentTimeMillis() + ConstantesSecurity.FECHA_EXPIRACION))
                 .signWith(key)
                 .compact();
+
+        IUsuarioService iUsuarioService = (IUsuarioService) AppContexto.getBean("usuarioService");
+        UsuarioDto usuarioDto = iUsuarioService.leerUsuario(username);
         
+        response.addHeader("Access-Control-Expose-Headers", "Authorization, idUsuario");
+        response.addHeader("IdUsuario", usuarioDto.getIdUsuario());
         response.addHeader(ConstantesSecurity.HEADER_STRING, ConstantesSecurity.TOKEN_PREFIJO + token);
     }
 }

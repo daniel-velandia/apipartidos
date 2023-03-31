@@ -16,6 +16,7 @@ import com.fesc.apipartidos.Data.Entidades.PartidoEntity;
 import com.fesc.apipartidos.Data.Entidades.UsuarioEntity;
 import com.fesc.apipartidos.Data.Repositorios.IPartidoRepository;
 import com.fesc.apipartidos.Data.Repositorios.IUsuarioRepository;
+import com.fesc.apipartidos.Errors.UsuarioExisteException;
 import com.fesc.apipartidos.Shared.PartidoDto;
 import com.fesc.apipartidos.Shared.UsuarioDto;
 
@@ -38,11 +39,11 @@ public class UsuarioService implements IUsuarioService{
     public UsuarioDto crearUsuario(UsuarioDto usuarioCrearDto) {
         
         if (iUsuarioRepository.findByEmail(usuarioCrearDto.getEmail()) != null) {
-            throw new RuntimeException("el email ya ha sido registrado previamente");
+            throw new UsuarioExisteException("el email ya ha sido registrado previamente");
         }
 
         if (iUsuarioRepository.findByUsername(usuarioCrearDto.getUsername()) != null) {
-            throw new RuntimeException("el username ya ha sido registrado previamente");
+            throw new UsuarioExisteException("el username ya ha sido registrado previamente");
         }
 
         UsuarioEntity usuarioEntityDto = modelMapper.map(usuarioCrearDto, UsuarioEntity.class);

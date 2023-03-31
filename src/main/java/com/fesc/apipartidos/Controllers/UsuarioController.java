@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class UsuarioController {
     @Autowired
     IUsuarioService iUsuarioService;
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UsuarioDataRestModel leerUsuario() {
         
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
